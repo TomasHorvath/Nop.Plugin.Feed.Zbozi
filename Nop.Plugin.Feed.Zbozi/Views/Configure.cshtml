@@ -1,0 +1,332 @@
+﻿@{
+    Layout = "";
+
+    Html.AddCssFileParts("~/Plugins/Feed.Zbozi/Content/styles.css");
+}
+@model Nop.Plugin.Feed.Zbozi.Models.ZboziFeedModel
+@using Nop.Core.Infrastructure
+@using Nop.Plugin.Feed.Zbozi.Models;
+@using Nop.Web.Framework;
+@using Nop.Web.Framework.UI;
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <script>
+        $(document).ready(function() {
+            bindBootstrapTabSelectEvent('googlebase-configure');
+        });
+    </script>
+
+    <div id="googlebase-configure" class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            @Html.RenderBootstrapTabHeader("tab-general", @T("Plugins.Feed.Zbozi.General"), true)
+            @Html.RenderBootstrapTabHeader("tab-override", @T("Plugins.Feed.Zbozi.Override"))
+        </ul>
+        <div class="tab-content">
+            @Html.RenderBootstrapTabContent("tab-general", @TabGeneral(), true)
+            @Html.RenderBootstrapTabContent("tab-override", @TabOverride())
+        </div>
+    </div>
+}
+@helper TabGeneral()
+{
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-body">
+
+			
+				<img style="width:300px;" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QA6RXhpZgAATU0AKgAAAAgAAwESAAMAAAABAAEAAFEAAAQAAAABAAAAAFEBAAMAAAABAAEAAAAAAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCADEAqEDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9/KKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigA3YpN9IetJu520APzkUA00HPWjPHWi4Ds80U3P+1+lG4E8UXAdSBs03cDQT/nFAD6KB0ooAKKN1AORQAUUUUAFFFFABRRRQAUUUUAFFFJvGaAFooDZo3c0AFFFFABRRRQAUUUUAFFFFABRRRmgAooJxRmgAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAa3zfT+dfIv/BVr/gpU37AXgfR7bRNJh1fxh4qE/8AZ4uifstnHFs3yyBSGbmRAqAjOWO5QvP10wzX50/8HC/7Lmp/FD4I+HfiDo9vLeS+A5pk1KKNcstnOE3Tev7uSNM46K7MeFJrzc2lWhhZzw/xWPuvDTA5XjeJcJhc4/gSlZ3dk3bRN6aN2Pg/xP8A8Fnf2kPEuqTXC/ESTTY5DlLay0u0jhiH90boi5+rMT71Stf+Cw37SVnOsifFDUiy/wB/TLFx+Rhx+lfNHbNFfl39pY29/aS+9n+i0eAeFow5FgKNv+vcP8j6+0L/AILo/tHaQqi48WaXqe1SpNzo1sN2Tnd+7ROR09Pauy0P/g4e+OWmuv2rSfAGoR5G4Safco5HoCtwACevINfB/ajPFaRzrHxf8WX5/mebifCng3EaTwFJf4YqP/pNj9NPBv8AwcoeJrJo1174Y6NfjgO1jq0lr9SA8cn5Z7decj3v4Pf8HDPwd8cXUNv4o0vxN4KkYZeee2F7ap/wKEtJ+PlgfSvxQIx+HX2ox+Hr9f6V20eJ8fB3clL1S/Q+VzT6PfBuLhy0qMqL7wnL8pXX4H9P/wAIfjr4P+PXhdNY8G+ItJ8Raax2maxuVlCN/dcA5Vh3VsEeldX5i5r+YT4JfHrxf+zp45tvEfgzXr/QtUt2BL28mEnUHJSRMbJE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" />
+
+                @T("Plugins.Feed.Zbozi.GeneralInstructions")
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.ProductPictureSize)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.ProductPictureSize)
+                        @Html.ValidationMessageFor(model => model.ProductPictureSize)
+                    </div>
+                </div>
+              
+				@*<div class="form-group">
+					<div class="col-md-3">
+						@Html.NopLabelFor(model => model.PassShippingInfo)
+					</div>
+					<div class="col-md-9">
+						@Html.NopEditorFor(model => model.PassShippingInfo)
+						@Html.ValidationMessageFor(model => model.PassShippingInfo)
+					</div>
+				</div>*@
+
+				<div class="form-group" @(Model.AvailableStores.SelectionIsNotPossible() ? Html.Raw("style=\"display:none\"") : null)>
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.StoreId)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopDropDownListFor(model => model.StoreId, Model.AvailableStores)
+                        @Html.ValidationMessageFor(model => model.StoreId)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.CurrencyId)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopDropDownListFor(model => model.CurrencyId, Model.AvailableCurrencies)
+                        @Html.ValidationMessageFor(model => model.CurrencyId)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.DefaultDeliveryDate)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.NopEditorFor(model => model.DefaultDeliveryDate)
+                        @Html.ValidationMessageFor(model => model.DefaultDeliveryDate)
+                    </div>
+                </div>
+
+				<div class="form-group">
+					<div class="col-md-3">
+						@Html.NopLabelFor(model => model.DefaultGoogleCategory)
+					</div>
+					<div class="col-md-9">
+						@Html.NopDropDownListFor(model => model.DefaultGoogleCategory, Model.AvailableGoogleCategories)
+						@Html.ValidationMessageFor(model => model.DefaultGoogleCategory)
+					</div>
+				</div>
+
+
+                @if (Model.GeneratedFiles.Count > 0)
+                {
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.NopLabelFor(m => m.GeneratedFiles)
+                        </div>
+                        <div class="col-md-9">
+                            @for (int i = 0; i <= Model.GeneratedFiles.Count - 1; i++)
+                            {
+                                var generatedFile = Model.GeneratedFiles[i];
+                                @generatedFile.StoreName <text>-</text> <a href="@generatedFile.FileUrl" target="_blank">@generatedFile.FileUrl</a>
+                                if (i != Model.GeneratedFiles.Count - 1)
+                                {
+                                    <br />
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+                <div class="form-group">
+                    <div class="col-md-3">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-9">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                        <input type="submit" name="generate" class="btn bg-green" value="@T("Plugins.Feed.Zbozi.Generate")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@helper TabOverride()
+{
+var defaultGridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().DefaultGridPageSize;
+var gridPageSizes = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSizes;
+
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                @T("Plugins.Feed.Zbozi.OverrideInstructions")
+                <script id="google-popup-editor" type="text/x-kendo-template">
+                    <div style="padding: 0 20px;">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-md-5">
+                                    <div class="label-wrapper">
+                                        <label for="GoogleCategory" class="control-label">
+                                            @T("Plugins.Feed.Zbozi.Products.ZboziCategory")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <input name="ZboziCategory" class="form-control" />
+                                </div>
+                            </div>
+                            @*<div class="form-group">
+                                <div class="col-md-5">
+                                    <div class="label-wrapper">
+                                        <label for="Gender" class="control-label">
+                                            @T("Plugins.Feed.Zbozi.Products.Gender")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <input name="Gender" class="form-control" />
+                                </div>
+                            </div>*@
+
+							<!-- custom Zbozi property -->
+
+							<div class="form-group">
+								<div class="col-md-5">
+									<div class="label-wrapper">
+										<label for="ZboziProductName" class="control-label">
+											@T("Plugins.Feed.Zbozi.Products.ZboziProductName")
+										</label>
+									</div>
+								</div>
+								<div class="col-md-7">
+									<input name="ZboziProductName" class="form-control" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-md-5">
+									<div class="label-wrapper">
+										<label for="MAXCPC" class="control-label">
+											@T("Plugins.Feed.Zbozi.Products.MAXCPC")
+										</label>
+									</div>
+								</div>
+								<div class="col-md-7">
+									<input name="MAXCPC" class="form-control" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-md-5">
+									<div class="label-wrapper">
+										<label for="MAXCPC_SEARCH" class="control-label">
+											@T("Plugins.Feed.Zbozi.Products.MAXCPC_SEARCH")
+										</label>
+									</div>
+								</div>
+								<div class="col-md-7">
+									<input name="MAXCPC_SEARCH" class="form-control" />
+								</div>
+							</div>
+
+
+
+							<div class="form-group">
+								<div class="col-md-5">
+									<div class="label-wrapper">
+										<label for="EXTRAMESSAGE" class="control-label">
+											@T("Plugins.Feed.Zbozi.Products.EXTRAMESSAGE")
+										</label>
+									</div>
+								</div>
+								<div class="col-md-7">
+									<input name="EXTRAMESSAGE" class="form-control" />
+								</div>
+							</div>
+						
+                        </div>
+                    </div>
+                </script>
+
+                <div id="products-grid"></div>
+
+                <script>
+                    $(document).ready(function() {
+                        $("#products-grid").kendoGrid({
+                            dataSource: {
+                                type: "json",
+                                transport: {
+                                    read: {
+                                        url: "@Html.Raw(Url.Action("GoogleProductList", "FeedZbozi", new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Feed.Zbozi.Controllers" }, { "area", "" } }))",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: addAntiForgeryToken
+                                    },
+                                    update: {
+                                        url: "@Html.Raw(Url.Action("GoogleProductUpdate", "FeedZbozi", new RouteValueDictionary { { "Namespaces", "Nop.Plugin.Feed.Zbozi.Controllers" }, { "area", "" } }))",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: addAntiForgeryToken
+                                    }
+                                },
+                                schema: {
+                                    data: "Data",
+                                    total: "Total",
+                                    errors: "Errors",
+                                    model: {
+                                        id: "Id",
+                                        fields: {
+                                            ProductId: { editable: false, type: "number" },
+                                            ProductName: { editable: false, type: "string" },
+                                            ZboziCategory: { editable: true, type: "string" },
+											ZboziProductName: { editable: true, type: "string" },
+											MAXCPC_SEARCH: { editable: true, type: "string" },
+											MAXCPC: { editable: true, type: "string" },
+											EXTRAMESSAGE: { editable: true, type: "string" },
+                                            Id: { editable: false, type: "number" }
+                                        }
+                                    }
+                                },
+                                requestEnd: function(e) {
+                                    if (e.type == "update") {
+                                        this.read();
+                                    }
+                                },
+                                error: function(e) {
+                                    display_kendoui_grid_error(e);
+                                    // Cancel the changes
+                                    this.cancelChanges();
+                                },
+                                pageSize: @(defaultGridPageSize),
+                                serverPaging: true,
+                                serverFiltering: true,
+                                serverSorting: true
+                            },
+                            pageable: {
+                                refresh: true,
+                                pageSizes: [@(gridPageSizes)],
+                                @Html.Partial("~/Administration/Views/Shared/_GridPagerMessages.cshtml")
+                            },
+                            editable: {
+                                confirmation: "@T("Admin.Common.DeleteConfirmation")",
+                                mode: "popup",
+                                template: kendo.template($("#google-popup-editor").html())
+                            },
+                            scrollable: false,
+                            columns: [{
+                                field: "ProductName",
+                                title: "@T("Plugins.Feed.Zbozi.Products.ProductName")",
+                                width: 300
+                            }, {
+                                field: "Id",
+                                title: "Data",
+                                width: 300,
+                                template: '<div class="google-info">' +
+                                    '<dl>' +
+                                    '<dt>@T("Plugins.Feed.Zbozi.Products.ZboziCategory"):</dt><dd># if(ZboziCategory !== null) {# #:ZboziCategory# #}  #</dd>' +
+                                    '<dt>@T("Plugins.Feed.Zbozi.Products.ZboziProductName"):</dt><dd># if(ZboziProductName !== null) {# #:ZboziProductName# #}  #</dd>' +
+                                    '<dt>@T("Plugins.Feed.Zbozi.Products.EXTRAMESSAGE"):</dt><dd># if(EXTRAMESSAGE !== null) {# #:EXTRAMESSAGE# #}  #</dd>' +
+									'<dt>@T("Plugins.Feed.Zbozi.Products.MAXCPC"):</dt><dd># if(MAXCPC !== null) {# #:MAXCPC# #}  #</dd>' +
+									'<dt>@T("Plugins.Feed.Zbozi.Products.MAXCPC_SEARCH"):</dt><dd># if(MAXCPC_SEARCH !== null) {# #:MAXCPC_SEARCH# #}  #</dd>' +
+                                    '</dl>' +
+                                    '</div>'
+                            }, {
+                                command: {
+                                    name: "edit",
+                                    text: {
+                                        edit: "@T("Admin.Common.Edit")",
+                                        update: "@T("Admin.Common.Update")",
+                                        cancel: "@T("Admin.Common.Cancel")"
+                                    }
+                                },
+                                title: "@T("Admin.Common.Edit")",
+                                width: 150
+                            }
+                            ]
+                        });
+                    });
+                </script>
+
+            </div>
+        </div>
+    </div>
+}

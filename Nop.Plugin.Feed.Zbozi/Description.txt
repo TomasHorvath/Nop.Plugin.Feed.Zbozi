@@ -1,0 +1,9 @@
+﻿Group: Promotion feeds
+FriendlyName: Zbozi.cz produktový feed
+SystemName: ProductFeed.Zbozi
+Version: 1.0
+SupportedVersions: 3.90
+Author: Tomas Horvath
+DisplayOrder: 1
+FileName:Nop.Plugin.Feed.Zbozi.dll
+Description: Plugin umožňuje generovat produktový feed pro službu zbozi.cz
